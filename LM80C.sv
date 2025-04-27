@@ -142,8 +142,8 @@ assign HDMI_FREEZE  = 0;
 assign HDMI_BLACKOUT= 0;
 
 assign AUDIO_S   = 0;
-assign AUDIO_L   = 0;
-assign AUDIO_R   = 0;
+assign AUDIO_L   = {1'd0,CHANNEL_L,7'd0};
+assign AUDIO_R   = {1'd0,CHANNEL_R,7'd0};
 assign AUDIO_MIX = 0;
 
 assign LED_DISK  = 0;
@@ -154,7 +154,7 @@ assign BUTTONS   = 0;
 `include "build_id.v"
 localparam CONF_STR = {
 	"LM80C;;",
-    "F1,BAS, Load BAS File;",
+   "F1,BAS, Load BAS File;",
 	"F2,PRG, Load PRG File;", 
 	"F3,BIN, Load BIOS ROM;",     
 	"-;",
@@ -313,6 +313,9 @@ assign VGA_HS = HSync;
 assign VGA_VS = VSync;
 assign VGA_DE = ~(VBlank | HBlank);
 
+wire [7:0] CHANNEL_L;
+wire [7:0] CHANNEL_R;
+
 lm80c lm80c_inst
 (
     .RESET      (reset),
@@ -420,8 +423,8 @@ downloader #(
     .PRG_INDEX  (2),
     .ROM_INDEX  (3),
     .ROM_START_ADDR (25'h00000),
-    .PRG_START_ADDR (25'h15608),
-    .PTR_PROGND     (25'h155e4)
+    .PRG_START_ADDR (25'h1560f),
+    .PTR_PROGND     (25'h155eb)
 )
 downloader_inst
 (
